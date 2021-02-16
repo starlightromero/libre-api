@@ -1,9 +1,0 @@
-{
-  "name": "libre-api",
-  "version": "1.0.0",
-  "description": "Find a Free Software alternative",
-  "main": "app.js",
-  "repository": "https://github.com/starlightromero/libre-api",
-  "author": "Starlight Romero",
-  "license": "GNU General Public License"
-}
