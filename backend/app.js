@@ -10,6 +10,12 @@ app.use((req, res, next) => {
   next();
 });
 
+const libreRoutes = require('./routes/libre');
+const proprietaryRoutes = require('./routes/proprietary');
+
+app.use('/libre', libreRoutes);
+app.use('/proprietary', proprietaryRoutes);
+
 mongoose.connect(
   process.env.MONGODB_URI,
   { useNewUrlParser: true, useUnifiedTopology: true },
