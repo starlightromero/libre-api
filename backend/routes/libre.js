@@ -16,3 +16,7 @@ router.delete('/:softwareId', libreController.deleteSoftware);
 router.get('/name/:softwareName', libreController.getSoftwareByName);
 
 router.get('/category/:softwareCategory', libreController.getSoftwareByCategory);
+
+router.get('/license/:softwareLicense', libreController.getSoftwareByLicense);
+
+module.exports = router;
