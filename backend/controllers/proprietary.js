@@ -1,8 +1,8 @@
-const Proprietary = require('../models/libre');
+const Proprietary = require('../models/proprietary');
 
 exports.getAllSoftware = (req, res) => {
   Proprietary.find().then(
-    (software) => res.join(software),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
@@ -12,7 +12,7 @@ exports.getSoftwareById = (req, res) => {
   Proprietary.findById(
     req.params.softwareId,
   ).then(
-    (software) => res.json(software),
+    (software) => res.status(200).json({ software }),
   ).catch((err) => {
     throw err.message;
   });
@@ -22,7 +22,7 @@ exports.getSoftwareByName = (req, res) => {
   Proprietary.find(
     { name: req.params.softwareName },
   ).then(
-    (software) => res.json(software),
+    (software) => res.status(200).json({ software }),
   ).catch((err) => {
     throw err.message;
   });
@@ -32,16 +32,16 @@ exports.getSoftwareByCategory = (req, res) => {
   Proprietary.find(
     { category: req.params.softwareCategory },
   ).then(
-    (software) => res.json(software),
+    (software) => res.status(200).json({ software }),
   ).catch((err) => {
     throw err.message;
   });
 };
 
 exports.addSoftware = (req, res) => {
-  const libre = new Proprietary(req.body);
-  libre.save().then(
-    (software) => res.status(200).json(software),
+  const proprietary = new Proprietary(req.body);
+  proprietary.save().then(
+    (software) => res.status(200).json({ software }),
   ).catch((err) => {
     throw err.message;
   });
@@ -53,7 +53,7 @@ exports.updateSoftware = (req, res) => {
   ).then(
     () => Proprietary.findById(req.params.softwareId),
   ).then(
-    (software) => res.json(software),
+    (software) => res.status(200).json({ software }),
   ).catch((err) => {
     throw err.message;
   });
@@ -66,7 +66,7 @@ exports.deleteSoftware = (req, res) => {
     if (software === null) {
       return res.json({ message: 'Software does not exist.' });
     }
-    return res.json({
+    return res.status(200).json({
       message: 'Successfully deleted.',
       _id: req.params.softwareId,
     });
