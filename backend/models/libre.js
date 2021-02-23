@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const libreSchema = new Schema(
+const LibreSchema = new Schema(
   {
     name: {
       type: String,
@@ -10,6 +10,19 @@ const libreSchema = new Schema(
     },
     category: {
       type: String,
+      enum: [
+        'Word processor',
+        'Graphic design',
+        'Video editing',
+        'Spreadsheet',
+        'Presentation',
+        'Web browser',
+        'Email client',
+        'Media player',
+        'Messaging',
+        'Password manager',
+        'Video conferencing',
+      ],
       required: true,
     },
     repo: {
@@ -22,14 +35,17 @@ const libreSchema = new Schema(
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
-    lastUpdated: {
-      type: Date,
+    license: {
+      type: String,
+      enum: [
+        'GPL-2.0', 'GPL-3.0', 'LGPL-2.0', 'LGPL-2.1', 'LGPL-3.0', 'MPL-2.0',
+      ],
       required: true,
     },
   },
   { timestamps: true },
 );
 
-module.exports = mongoose.model('Libre', libreSchema);
+module.exports = mongoose.model('Libre', LibreSchema);
