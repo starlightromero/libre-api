@@ -34,10 +34,9 @@ describe('Libre API endpoints', () => {
       license: 'GPL-3.0',
       _id: SAMPLE_OBJECT_ID,
     });
-    console.log(libreSoftware);
-    libreSoftware.save().then(() => {
-      done();
-    });
+    libreSoftware.save().then(
+      done(),
+    );
   });
 
   afterEach((done) => {
@@ -56,12 +55,12 @@ describe('Libre API endpoints', () => {
     ).end((err, res) => {
       if (err) { done(err); }
       expect(res).to.have.status(200);
-      expect(res.body.software).to.be.an('array');
+      expect(res.body).to.be.an('array');
       done();
     });
   });
 
-  it('should get one specific software', (done) => {
+  it('should get one software by id', (done) => {
     chai.request(
       app,
     ).get(
@@ -70,12 +69,12 @@ describe('Libre API endpoints', () => {
       if (err) { done(err); }
       expect(res).to.have.status(200);
       expect(res.body).to.be.an('object');
-      expect(res.body.message.name).to.equal('LibreSample');
-      expect(res.body.message.category).to.equal('Word processor');
-      expect(res.body.message.repo).to.equal('https://gitlab.com/libresample');
-      expect(res.body.message.website).to.equal('https://sample.tk');
-      expect(res.body.message.description).to.equal('This is a sample word processor.');
-      expect(res.body.message.license).to.equal('GPL-3.0');
+      expect(res.body.name).to.equal('LibreSample');
+      expect(res.body.category).to.equal('Word processor');
+      expect(res.body.repo).to.equal('https://gitlab.com/libresample');
+      expect(res.body.website).to.equal('https://sample.tk');
+      expect(res.body.description).to.equal('This is a sample word processor.');
+      expect(res.body.license).to.equal('GPL-3.0');
       done();
     });
   });
@@ -96,8 +95,8 @@ describe('Libre API endpoints', () => {
       },
     ).end((err, res) => {
       if (err) { done(err); }
-      expect(res.body.software).to.be.an('object');
-      expect(res.body.software).to.have.property('name', 'LibreMailSample');
+      expect(res.body).to.be.an('object');
+      expect(res.body).to.have.property('name', 'LibreMailSample');
 
       Libre.findOne({ name: 'LibreMailSample' }).then((software) => {
         expect(software).to.be.an('object');
@@ -109,14 +108,14 @@ describe('Libre API endpoints', () => {
   it('should update a software', (done) => {
     chai.request(
       app,
-    ).put(
+    ).patch(
       `/libre/${SAMPLE_OBJECT_ID}`,
     ).send(
       { name: 'LibreWordSample' },
     ).end((err, res) => {
       if (err) { done(err); }
-      expect(res.body.software).to.be.an('object');
-      expect(res.body.software).to.have.property('name', 'LibreWordSample');
+      expect(res.body).to.be.an('object');
+      expect(res.body).to.have.property('name', 'LibreWordSample');
 
       Libre.findOne({ name: 'LibreWordSample' }).then((software) => {
         expect(software).to.be.an('object');
