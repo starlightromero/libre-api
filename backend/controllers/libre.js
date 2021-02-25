@@ -12,7 +12,7 @@ exports.getSoftwareById = (req, res) => {
   Libre.findById(
     req.params.softwareId,
   ).then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
@@ -22,7 +22,7 @@ exports.getSoftwareByName = (req, res) => {
   Libre.find(
     { name: req.params.softwareName },
   ).then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
@@ -32,7 +32,7 @@ exports.getSoftwareByCategory = (req, res) => {
   Libre.find(
     { category: req.params.softwareCategory },
   ).then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
@@ -42,7 +42,7 @@ exports.getSoftwareByLicense = (req, res) => {
   Libre.find(
     { license: req.params.softwareLicense },
   ).then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
@@ -51,7 +51,7 @@ exports.getSoftwareByLicense = (req, res) => {
 exports.addSoftware = (req, res) => {
   const libre = new Libre(req.body);
   libre.save().then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
@@ -63,7 +63,7 @@ exports.updateSoftware = (req, res) => {
   ).then(
     () => Libre.findById(req.params.softwareId),
   ).then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });

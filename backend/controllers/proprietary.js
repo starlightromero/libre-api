@@ -12,7 +12,7 @@ exports.getSoftwareById = (req, res) => {
   Proprietary.findById(
     req.params.softwareId,
   ).then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
@@ -22,7 +22,7 @@ exports.getSoftwareByName = (req, res) => {
   Proprietary.find(
     { name: req.params.softwareName },
   ).then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
@@ -32,7 +32,7 @@ exports.getSoftwareByCategory = (req, res) => {
   Proprietary.find(
     { category: req.params.softwareCategory },
   ).then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
@@ -41,7 +41,7 @@ exports.getSoftwareByCategory = (req, res) => {
 exports.addSoftware = (req, res) => {
   const proprietary = new Proprietary(req.body);
   proprietary.save().then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
@@ -53,7 +53,7 @@ exports.updateSoftware = (req, res) => {
   ).then(
     () => Proprietary.findById(req.params.softwareId),
   ).then(
-    (software) => res.status(200).json({ software }),
+    (software) => res.status(200).json(software),
   ).catch((err) => {
     throw err.message;
   });
