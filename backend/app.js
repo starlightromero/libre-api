@@ -23,9 +23,11 @@ app.use(compareRoutes);
 
 mongoose.connect(
   process.env.MONGODB_URI,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
 ).then(() => {
   app.listen(3000);
 }).catch((err) => {
   throw new Error(err);
 });
+
+module.exports = app;
