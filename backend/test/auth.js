@@ -1,4 +1,6 @@
 /* eslint-env mocha */
+require('dotenv').config()
+const mongoose = require('mongoose')
 const chai = require('chai')
 const chaiHttp = require('chai-http')
 const app = require('../app')
@@ -12,15 +14,31 @@ const { expect } = chai
 const should = chai.should()
 chai.use(chaiHttp)
 
+let TOKEN = ''
+
+after(function (done) {
+  mongoose.models = {}
+  mongoose.modelSchemas = {}
+  mongoose.connection.close()
+  done()
+})
+
 describe('Auth API Endpoints', function () {
   beforeEach(function (done) {
     const sampleUser = new User({
       username: 'myuser',
       password: 'mypassword'
     })
-    sampleUser
-      .save()
-      .then(function () { done() })
+    chai.request(app)
+      .post('/sign-up')
+      .set('content-type', 'application/json')
+      .send(sampleUser)
+      .end(function (err, res) {
+        if (err) { done(err) }
+        sampleUser.save()
+        TOKEN = res.body.token
+        done()
+      })
   })
 
   afterEach(function (done) {
@@ -47,9 +65,7 @@ describe('Auth API Endpoints', function () {
       .set('content-type', 'application/json')
       .send({ username: 'anotheruser', password: 'password' })
       .end(function (err, res) {
-        console.log('\n\nHERE\n\n')
         if (err) { done(err) }
-        console.log('\n\nAFTER ERROR\n\n')
         expect(res).to.have.status(200)
         expect(res.body.token).to.be.a('string')
         done()
@@ -67,12 +83,5 @@ describe('Auth API Endpoints', function () {
         expect(res.body.token).to.be.a('string')
         done()
       })
-  })
-
-  after(function (done) {
-    mongoose.models = {}
-    mongoose.modelSchemas = {}
-    mongoose.connection.close()
-    done()
   })
 })
