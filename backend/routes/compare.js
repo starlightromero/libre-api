@@ -1,10 +1,11 @@
 const express = require('express');
-const compareController = require('../controllers/compare');
 
 const router = express.Router();
 
-router.get('/:softwareCategory', compareController.findSoftwareByCategory);
+const compareController = require('../controllers/compare');
 
-router.post('/', compareController.findSoftwareByName);
+router.get('/name/:softwareName', compareController.findSoftwareByName);
+
+router.get('/category/:softwareCategory', compareController.findSoftwareByCategory);
 
 module.exports = router;
