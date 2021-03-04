@@ -24,7 +24,7 @@ exports.signUpUser = (req, res) => {
     })
     .then((user) => {
       const token = jwt.sign({
-        username: loadedUser.username,
+        username: user.username,
         userId: user._id.toString(),
       }, process.env.SECRET_KEY, {
         expiresIn: '1h',
@@ -54,13 +54,9 @@ exports.signInUser = (req, res) => {
         });
       }
       loadedUser = user;
-      console.log('\n\n');
-      console.log(password, user.password);
-      console.log('\n\n');
       return bcrypt.compare(password, user.password);
     })
     .then((isEqual) => {
-      console.log(`\n\n${isEqual}\n\n`);
       if (!isEqual) {
         return res.status(401).json({
           message: 'Incorrect password',
