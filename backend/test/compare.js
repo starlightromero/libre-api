@@ -17,6 +17,13 @@ chai.use(chaiHttp)
 const SAMPLE_LIBRE_ID = 'aaaaaaaaaaaa'
 const SAMPLE_PROPRIETARY_ID = 'bbbbbbbbbbbb'
 
+after(function (done) {
+  mongoose.models = {}
+  mongoose.modelSchemas = {}
+  mongoose.connection.close()
+  done()
+})
+
 describe('Compare API endpoints', function () {
   const proprietarySoftware = new Proprietary({
     name: 'ProprietarySample',
@@ -34,19 +41,27 @@ describe('Compare API endpoints', function () {
   })
 
   beforeEach(function (done) {
-    proprietarySoftware
-      .save()
     libreSoftware
       .save()
+      .then(function () {
+        return proprietarySoftware.save()
+      })
       .then(function () { done() })
+      .catch(function (err) {
+        done(err)
+      })
   })
 
   afterEach(function (done) {
     Proprietary
       .deleteMany({ name: ['ProprietarySample', 'ProprietaryMailSample'] })
-    Libre
-      .deleteMany({ name: ['LibreSample', 'LibreMailSample'] })
+      .then(function () {
+        return Libre.deleteMany({ name: ['LibreSample', 'LibreMailSample'] })
+      })
       .then(function () { done() })
+      .catch(function (err) {
+        done(err)
+      })
   })
 
   it('should get all libre software by category of the proprietary name', function (done) {
@@ -71,12 +86,5 @@ describe('Compare API endpoints', function () {
         expect(res.body.category).to.equal('Word processor')
         done()
       })
-  })
-
-  after(function (done) {
-    mongoose.models = {}
-    mongoose.modelSchemas = {}
-    mongoose.connection.close()
-    done()
   })
 })
