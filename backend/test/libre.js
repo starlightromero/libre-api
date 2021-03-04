@@ -17,11 +17,18 @@ chai.use(chaiHttp)
 const SAMPLE_OBJECT_ID = 'aaaaaaaaaaaa'
 let TOKEN = ''
 
+after(function (done) {
+  mongoose.models = {}
+  mongoose.modelSchemas = {}
+  mongoose.connection.close()
+  done()
+})
+
 describe('Libre API endpoints', function () {
-  const user = {
+  const sampleUser = new User({
     username: 'sampleUser',
     password: 'password'
-  }
+  })
   const libreSoftware = new Libre({
     name: 'LibreSample',
     category: 'Word processor',
@@ -35,15 +42,19 @@ describe('Libre API endpoints', function () {
   beforeEach(function (done) {
     libreSoftware
       .save()
-    chai.request(app)
-      .post('/sign-up')
-      .set('content-type', 'application/json')
-      .send(user)
-      .end(function (err, res) {
-        if (err) { done(err) }
-        user.save()
-        TOKEN = res.body.token
-        done()
+      .then(function () {
+        chai.request(app)
+        .post('/sign-up')
+        .set('content-type', 'application/json')
+        .send(sampleUser)
+        .end(function (err, res) {
+          if (err) { done(err) }
+          sampleUser.save()
+          TOKEN = res.body.token
+          done()
+        })
+      }).catch(function (err) {
+        done(err)
       })
   })
 
@@ -147,12 +158,5 @@ describe('Libre API endpoints', function () {
             done()
           })
       })
-  })
-
-  after(function (done) {
-    mongoose.models = {}
-    mongoose.modelSchemas = {}
-    mongoose.connection.close()
-    done()
   })
 })
