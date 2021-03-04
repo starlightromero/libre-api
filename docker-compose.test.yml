@@ -6,7 +6,7 @@ services:
       - data:/data/db
     env_file:
       - ./env/mongo.env
-  backend:
+  backend-test:
     build: ./backend
     ports:
       - "3000:3000"
@@ -17,5 +17,6 @@ services:
       - ./env/backend.env
     depends_on:
       - mongodb
+    command: yarn test
 volumes:
   data:
