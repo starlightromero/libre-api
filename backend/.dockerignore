@@ -1,3 +1,6 @@
 Dockerfile
 node_modules
-.git
+.git*
+docs
+.eslintrc.js
+docker-compose*
