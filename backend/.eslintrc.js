@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     commonjs: true,
     es2021: true,
+    mocha: true,
   },
   extends: [
     'airbnb-base',
@@ -10,6 +11,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
   },
+  ignorePatterns: ['test/'],
   rules: {
   },
 };
